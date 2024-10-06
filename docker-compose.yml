@@ -1,0 +1,43 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./vic-be
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - mi-red
+      
+  frontend:
+    build:
+      context: ./frontend-main
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - mi-red
+      
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: paupau1212
+      MYSQL_DATABASE: mi_base_de_datos
+    networks:
+      - mi-red
+      
+  adminer:
+    image: adminer
+    ports:
+      - 8083:8080
+    depends_on:
+      - db
+    networks:
+      - mi-red
+
+networks:
+  mi-red:
